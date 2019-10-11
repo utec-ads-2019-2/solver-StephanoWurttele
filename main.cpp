@@ -1,4 +1,5 @@
 #include "node.h"
+#include <string>
 #include <stack>
 #include <vector>
 #include <map>
@@ -45,7 +46,7 @@ void traverseInOrder(Node* newroot) {
 	return;
 }
 
-bool inmap(char &x,map<char,char> &variables){
+bool inmap(char &x,map<char,string> &variables){
 	for(auto it=variables.begin();it!=variables.end();it++){
 		if(it->first==x)
 			return true;
@@ -61,7 +62,7 @@ int main(){
 	string input="";
 	cout<<"Write \"quit\" to exit and variables in caps"<<endl;
 	while(true){
-	map<char,char> variables;
+	map<char,string> variables;
 	cin>>input;
 	if(input=="quit")
 		break;
@@ -69,14 +70,14 @@ int main(){
 		if(!isdigit(input[i])){
 			if(input[i]>='A' && input[i]<='Z'){
 				if(inmap(input[i],variables)){
-					input[i]=variables[input[i]];
+					input.replace(i,1,variables[input[i]]);
 				}
 				else{
 					cout<<"Insert number for "<<input[i]<<endl;
-					char number;
+					string number;
 					cin>>number;
 					variables[input[i]]=number;
-					input[i]=number;
+					input.replace(i,1,number);
 				}
 			}
 		}
