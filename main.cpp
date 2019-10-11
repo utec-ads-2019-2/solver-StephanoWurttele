@@ -1,6 +1,7 @@
 #include "node.h"
 #include <stack>
-
+#include <vector>
+#include <map>
 using namespace std;
 
 
@@ -34,10 +35,6 @@ Node* constructTree(stack<Node*> &build){
 return root;
 }
 
-
-
-
-
 void traverseInOrder(Node* newroot) {
 	Node* temp=newroot;
 	if (temp->left)
@@ -48,16 +45,42 @@ void traverseInOrder(Node* newroot) {
 	return;
 }
 
+bool inmap(char &x,map<char,char> &variables){
+	for(auto it=variables.begin();it!=variables.end();it++){
+		if(it->first==x)
+			return true;
+	}
+	return false;
+};
+
+
+
 int main(){
 	stack<Node*> build;
 	stack<Node*> signs;
-
 	string input="";
-	cout<<"Write \"quit\" to exit"<<endl;
+	cout<<"Write \"quit\" to exit and variables in caps"<<endl;
 	while(true){
+	map<char,char> variables;
 	cin>>input;
 	if(input=="quit")
 		break;
+	for(int i=0;i<input.length();i++){
+		if(!isdigit(input[i])){
+			if(input[i]>='A' && input[i]<='Z'){
+				if(inmap(input[i],variables)){
+					input[i]=variables[input[i]];
+				}
+				else{
+					cout<<"Insert number for "<<input[i]<<endl;
+					char number;
+					cin>>number;
+					variables[input[i]]=number;
+					input[i]=number;
+				}
+			}
+		}
+	}
 	for(int i=0;i<input.length();i++){
 		string temp="";
 		while(isdigit(input[i]) && isdigit(input[i+1])){
